@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <queries>
+
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+
+        <package android:name="com.spotify.music" />
+
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Lexus Launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LexusLauncher"
+        tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="TWÓJ_DOTYCHCZASOWY_KLUCZ_API" />
+
+        <!-- Device Admin Receiver -->
+
+        <receiver
+            android:name=".system.kiosk.KioskDeviceAdminReceiver"
+            android:label="Lexus Launcher Kiosk"
+            android:description="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true">
+
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+
+        </receiver>
+
+        <!-- Main Activity -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:resizeableActivity="false"
+            android:excludeFromRecents="false"
+            android:alwaysRetainTaskState="true"
+            android:clearTaskOnLaunch="false"
+            android:stateNotNeeded="false"
+            android:theme="@style/Theme.LexusLauncher">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
+        </activity>
+
+        <!-- Notification Listener -->
+
+        <service
+            android:name=".data.providers.NotificationListener"
+            android:label="Notification Listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+
+        </service>
+
+        <!-- Boot Receiver -->
+
+        <receiver
+            android:name=".system.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+        </receiver>
+
+    </application>
+
+</manifest>
